@@ -50,7 +50,7 @@ const LanguageSwitcher = memo(() => {
                 >
                     <span className={`dropdown-item${language === currentLanguage ? " menu-active" : ""}`}>
                         {LOCALES_NAMES_MAP[language]}
-                        {language === "en" ? null : <span className="text-xs text-warning">AI</span>}
+                        {language === "en" || language === "zh-CN" ? null : <span className="text-xs text-warning">AI</span>}
                     </span>
                 </li>,
             );

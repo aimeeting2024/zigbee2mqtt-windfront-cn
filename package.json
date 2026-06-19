@@ -22,7 +22,7 @@
     },
     "homepage": "https://github.com/Nerivec/zigbee2mqtt-windfront/#readme",
     "scripts": {
-        "clean": "rm -rf ./dist",
+        "clean": "node -e \"require('node:fs').rmSync('./dist', {recursive: true, force: true})\"",
         "build": "vite build && vite build --config vite.onboarding.config.mts",
         "preview": "vite preview",
         "start": "vite dev",
