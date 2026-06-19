@@ -33,7 +33,7 @@ const buildFieldDescription = (
     let description: string | undefined;
     const fieldDefault = property.default != null ? `${t(($) => $.default, { ns: "common" })}: ${property.default}` : undefined;
     const requiresRestart = property.requiresRestart ? t(($) => $.requires_restart, { ns: "common" }) : undefined;
-    const originalKey = label !== key ? `原始字段: ${key}` : undefined;
+    const originalKey = label !== key ? `Original field: ${key}` : undefined;
 
     if (property.description !== null) {
         description = `${t(($) => $[newPath as keyof (typeof $)["settingsSchemaDescriptions"]], { defaultValue: property.description })}`;
