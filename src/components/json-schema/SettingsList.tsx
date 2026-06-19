@@ -27,13 +27,20 @@ const buildFieldDescription = (
     t: ReturnType<typeof useTranslation<["settingsSchemaDescriptions", "common"]>>["t"],
     property: JSONSchema7 & { requiresRestart?: boolean },
     newPath: string,
+    key: string,
+    label: string,
 ) => {
     let description: string | undefined;
     const fieldDefault = property.default != null ? `${t(($) => $.default, { ns: "common" })}: ${property.default}` : undefined;
     const requiresRestart = property.requiresRestart ? t(($) => $.requires_restart, { ns: "common" }) : undefined;
+    const originalKey = label !== key ? `原始字段: ${key}` : undefined;
 
     if (property.description !== null) {
         description = `${t(($) => $[newPath as keyof (typeof $)["settingsSchemaDescriptions"]], { defaultValue: property.description })}`;
+
+        if (originalKey) {
+            description = `${originalKey} 🔹${description}`;
+        }
 
         if (fieldDefault) {
             description += ` 🔹${fieldDefault}`;
@@ -44,13 +51,15 @@ const buildFieldDescription = (
         }
     } else {
         if (fieldDefault) {
-            description = `🔹${fieldDefault}`;
+            description = originalKey ? `${originalKey} 🔹${fieldDefault}` : `🔹${fieldDefault}`;
 
             if (requiresRestart) {
                 description += ` 🔸${requiresRestart}`;
             }
         } else if (requiresRestart) {
-            description = `🔸${requiresRestart}`;
+            description = originalKey ? `${originalKey} 🔸${requiresRestart}` : `🔸${requiresRestart}`;
+        } else if (originalKey) {
+            description = originalKey;
         }
     }
 
@@ -65,6 +74,7 @@ const propertyToField = (
     depth: number,
     required?: boolean,
     description?: string,
+    label = key,
 ): JSX.Element | undefined => {
     let propertyType = property.type;
 
@@ -84,7 +94,7 @@ const propertyToField = (
                 <CheckboxField
                     key={elemKey}
                     name={key}
-                    label={key}
+                    label={label}
                     detail={description}
                     onChange={(e) => !e.target.validationMessage && set({ [key]: e.target.checked })}
                     required={required}
@@ -100,7 +110,7 @@ const propertyToField = (
                     <SelectField
                         key={elemKey}
                         name={key}
-                        label={key}
+                        label={label}
                         detail={description}
                         onChange={(e) =>
                             !e.target.validationMessage && set({ [key]: e.target.value === "" ? null : Number.parseInt(e.target.value, 10) })
@@ -124,7 +134,7 @@ const propertyToField = (
                 <NumberField
                     key={elemKey}
                     name={key}
-                    label={key}
+                    label={label}
                     detail={description}
                     onSubmit={(value, valid) => valid && set({ [key]: value === "" ? null : value })}
                     min={property.minimum}
@@ -141,7 +151,7 @@ const propertyToField = (
                     <SelectField
                         key={elemKey}
                         name={key}
-                        label={key}
+                        label={label}
                         detail={description}
                         onChange={(e) => !e.target.validationMessage && set({ [key]: e.target.value === "" ? null : e.target.value })}
                         required={required}
@@ -163,7 +173,7 @@ const propertyToField = (
                 <InputField
                     key={elemKey}
                     name={key}
-                    label={key}
+                    label={label}
                     detail={description}
                     type="text"
                     onBlur={(e) => !e.target.validationMessage && set({ [key]: e.target.value === "" ? null : e.target.value })}
@@ -187,7 +197,7 @@ const propertyToField = (
                     return (
                         <CheckboxesField
                             names={items.enum as string[]}
-                            label={key}
+                            label={label}
                             detail={description}
                             onSubmit={(values) => set({ [key]: values })}
                             defaultsChecked={(value as string[]) ?? []}
@@ -199,7 +209,7 @@ const propertyToField = (
                     return (
                         <ArrayField
                             defaultValues={(value as (string | number)[]) ?? []}
-                            label={key}
+                            label={label}
                             detail={description}
                             onSubmit={(values) => set({ [key]: values })}
                             type={items.type}
@@ -283,8 +293,9 @@ const groupProperties = (
                     );
                 }
             } else {
-                const description = buildFieldDescription(t, property, newPath);
-                const feature = propertyToField(key, property, data[key] ?? property.default, set, depth, required.includes(key), description);
+                const label = t(($) => $[`${newPath}__title` as keyof (typeof $)["settingsSchemaDescriptions"]], { defaultValue: key });
+                const description = buildFieldDescription(t, property, newPath, key, label);
+                const feature = propertyToField(key, property, data[key] ?? property.default, set, depth, required.includes(key), description, label);
 
                 if (feature) {
                     elements.push(
