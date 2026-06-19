@@ -33,7 +33,7 @@
         "typecheck": "tsc --noEmit",
         "check": "biome check --write .",
         "check:ci": "biome check .",
-        "prepare": "node -e \"const fs=require('node:fs');const child_process=require('node:child_process');if(!fs.existsSync('./dist/index.html')){child_process.execFileSync(process.platform==='win32'?'npm.cmd':'npm',['run','build'],{stdio:'inherit'});}\"",
+        "prepare": "node -e \"const fs=require('node:fs');const child_process=require('node:child_process');if(!fs.existsSync('./dist/index.html')){child_process.execSync('npm run build',{stdio:'inherit'});}\"",
         "prepack": "npm run clean && npm run build",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build"
