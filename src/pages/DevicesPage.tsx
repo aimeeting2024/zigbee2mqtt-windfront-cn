@@ -17,6 +17,7 @@ import VendorLink from "../components/value-decorators/VendorLink.js";
 import { useTable } from "../hooks/useTable.js";
 import { NavBarContent } from "../layout/NavBarContext.js";
 import { OUI } from "../oui.js";
+import { getSemanticTitle } from "../semanticLabels.js";
 import { API_NAMES, API_URLS, MULTI_INSTANCE, useAppStore } from "../store.js";
 import type { AvailabilityState, Device, DeviceState } from "../types.js";
 import { getLastSeenEpoch, toHex } from "../utils.js";
@@ -126,7 +127,7 @@ export default function DevicesPage(): JSX.Element {
                 id: "friendly_name",
                 size: 250,
                 minSize: 175,
-                header: t(($) => $.friendly_name, { ns: "common" }),
+                header: () => <span title={getSemanticTitle("friendly_name")}>设备名称</span>,
                 accessorFn: ({ device }) => `${device.friendly_name} ${device.description ?? ""}`,
                 cell: ({
                     row: {
@@ -159,7 +160,7 @@ export default function DevicesPage(): JSX.Element {
             {
                 id: "ieee_address",
                 minSize: 175,
-                header: t(($) => $.ieee_address),
+                header: () => <span title={getSemanticTitle("ieee_address", t(($) => $.ieee_address))}>{t(($) => $.ieee_address)}</span>,
                 accessorFn: ({ device }) => `${device.ieee_address} ${toHex(device.network_address, 4)} ${device.network_address}`,
                 cell: ({
                     row: {
@@ -233,7 +234,7 @@ export default function DevicesPage(): JSX.Element {
             {
                 id: "lqi",
                 size: 70,
-                header: t(($) => $.lqi),
+                header: () => <span title={getSemanticTitle("linkquality")}>信号</span>,
                 accessorFn: ({ state }) => state.linkquality,
                 cell: ({
                     row: {
@@ -246,7 +247,7 @@ export default function DevicesPage(): JSX.Element {
             {
                 id: "last_seen",
                 size: 120,
-                header: t(($) => $.last_seen),
+                header: () => <span title={getSemanticTitle("last_seen")}>最后上报</span>,
                 accessorFn: ({ sourceIdx, state }) => {
                     const lastTs = getLastSeenEpoch(state.last_seen, bridgeInfo[sourceIdx].config.advanced.last_seen);
 
@@ -279,7 +280,7 @@ export default function DevicesPage(): JSX.Element {
             {
                 id: "availability",
                 size: 125,
-                header: t(($) => $.availability, { ns: "availability" }),
+                header: () => <span title={getSemanticTitle("availability")}>在线状态</span>,
                 accessorFn: ({ sourceIdx, availabilityState, availabilityEnabledForDevice, device }) =>
                     t(
                         ($) =>
@@ -312,7 +313,7 @@ export default function DevicesPage(): JSX.Element {
             {
                 id: "power_source",
                 size: 100,
-                header: t(($) => $.power_source),
+                header: () => <span title={getSemanticTitle("power_source")}>供电方式</span>,
                 accessorFn: ({ device }) => device.power_source,
                 filterFn: "equals",
                 meta: { filterVariant: "select", showFacetedOccurrences: true },
@@ -320,7 +321,7 @@ export default function DevicesPage(): JSX.Element {
             {
                 id: "battery_level",
                 size: 100,
-                header: t(($) => $.battery_level),
+                header: () => <span title={getSemanticTitle("battery")}>电池电量</span>,
                 accessorFn: ({ state }) => state.battery ?? undefined,
                 cell: ({
                     row: {
@@ -333,7 +334,7 @@ export default function DevicesPage(): JSX.Element {
             {
                 id: "battery_low",
                 size: 100,
-                header: t(($) => $.battery_low),
+                header: () => <span title={getSemanticTitle("battery_low")}>电量低</span>,
                 accessorFn: ({ batteryLow }) => batteryLow,
                 cell: ({
                     row: {

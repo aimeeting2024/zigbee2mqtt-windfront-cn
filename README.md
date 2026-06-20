@@ -34,14 +34,16 @@ npm start
 When running against a local Zigbee2MQTT instance, point the frontend to the backend WebSocket endpoint:
 
 ```sh
-VITE_Z2M_API_URLS=localhost:8080/api VITE_Z2M_API_NAMES=local npm start
+VITE_Z2M_API_URLS=localhost:8090/api VITE_Z2M_API_NAMES=local npm start
 ```
 
 On Windows PowerShell:
 
 ```powershell
-$env:VITE_Z2M_API_URLS="localhost:8080/api"; $env:VITE_Z2M_API_NAMES="local"; npm start
+$env:VITE_Z2M_API_URLS="localhost:8090/api"; $env:VITE_Z2M_API_NAMES="local"; npm start
 ```
+
+By default, the Vite dev server proxies `/api` to `ws://localhost:8090`. To run against the bundled mock WebSocket server instead, start with `Z2M_USE_MOCK=true npm start`.
 
 ### Using this fork in a Zigbee2MQTT source build
 

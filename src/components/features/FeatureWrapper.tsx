@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import startCase from "lodash/startCase.js";
 import { type PropsWithChildren, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { getSemanticLabel } from "../../semanticLabels.js";
 import { type ColorFeature, FeatureAccessMode, type FeatureWithAnySubFeatures } from "../../types.js";
 import Button from "../Button.js";
 import { getFeatureIcon } from "./index.js";
@@ -34,10 +35,13 @@ export default function FeatureWrapper({
     const isReadable = onRead !== undefined && (Boolean(feature.property && feature.access & FeatureAccessMode.GET) || isColorFeature(feature));
     const parentFeature = parentFeatures[parentFeatures.length - 1];
     const featureName = feature.name === "state" ? feature.property : feature.name;
-    let label = feature.label || startCase(featureName);
+    const semantic = getSemanticLabel(featureName, feature.label || startCase(featureName));
+    let label = semantic.label;
 
     if (parentFeature?.label && feature.name === "state" && parentFeature.type !== "light" && parentFeature.type !== "switch") {
-        label = `${parentFeature.label} ${feature.label.charAt(0).toLowerCase()}${feature.label.slice(1)}`;
+        const parentSemantic = getSemanticLabel(parentFeature.name, parentFeature.label);
+
+        label = `${parentSemantic.label} ${label}`;
     }
 
     const onSyncClick = useCallback(
@@ -58,11 +62,12 @@ export default function FeatureWrapper({
                 )}
             </div>
             <div>
-                <div title={featureName}>
+                <div title={semantic.originalKey ? `原始字段：${semantic.originalKey}` : undefined}>
                     {label}
+                    {semantic.originalKey && <span className="ms-2 font-mono text-xs opacity-50">{semantic.originalKey}</span>}
                     {!endpointSpecific && feature.endpoint ? ` (${t(($) => $.endpoint)}: ${feature.endpoint})` : ""}
                 </div>
-                <div className="text-xs font-semibold opacity-60">{feature.description}</div>
+                <div className="text-xs font-semibold opacity-60">{semantic.description || feature.description}</div>
             </div>
             <div className="list-col-wrap flex flex-col gap-2">{children}</div>
             {isReadable && (

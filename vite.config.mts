@@ -2,11 +2,14 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { compression, defineAlgorithm } from "vite-plugin-compression2";
-import { startServer } from "./mocks/ws.js";
 
 // biome-ignore lint/suspicious/useAwait: follows API
 export default defineConfig(async ({ command, mode }) => {
-    if (command === "serve" && mode !== "test") {
+    const useMockServer = process.env.Z2M_USE_MOCK === "true" || process.env.VITE_Z2M_USE_MOCK === "true";
+
+    if (command === "serve" && mode !== "test" && useMockServer) {
+        const { startServer } = await import("./mocks/ws.js");
+
         startServer();
     }
 
@@ -59,7 +62,7 @@ export default defineConfig(async ({ command, mode }) => {
             proxy: {
                 "/api": {
                     changeOrigin: true,
-                    target: process.env.Z2M_API_URI ? process.env.Z2M_API_URI : "ws://localhost:8579",
+                    target: process.env.Z2M_API_URI ? process.env.Z2M_API_URI : "ws://localhost:8090",
                     ws: true,
                 },
             },
