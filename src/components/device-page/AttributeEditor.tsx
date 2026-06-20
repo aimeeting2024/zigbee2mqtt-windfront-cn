@@ -355,7 +355,7 @@ const AttributeEditor = memo(({ sourceIdx, device, read, write, readReporting, l
             {lastLog && <LastLogResult message={lastLog} />}
         </div>
     ) : (
-        <span>No endpoints</span>
+        <span>无端点</span>
     );
 });
 

@@ -227,22 +227,22 @@ const CommandExecutor = memo(({ sourceIdx, device, lastLog }: CommandExecutorPro
                                     {param.name}: {DataType[param.type] ?? BuffaloZclDataType[param.type]}
                                 </div>
                                 <div className="flex flex-row gap-2 justify-end">
-                                    {param.min != null ? <span>Min: {param.min}</span> : null}
-                                    {param.minExcl != null ? <span>Min excl: {param.minExcl}</span> : null}
-                                    {param.max != null ? <span>Max: {param.max}</span> : null}
-                                    {param.maxExcl != null ? <span>Max excl: {param.maxExcl}</span> : null}
-                                    {param.minLen != null ? <span>Min len: {param.minLen}</span> : null}
-                                    {param.maxLen != null ? <span>Max len: {param.maxLen}</span> : null}
-                                    {param.length != null ? <span>Length: {param.length}</span> : null}
+                                    {param.min != null ? <span>最小值: {param.min}</span> : null}
+                                    {param.minExcl != null ? <span>最小(排除): {param.minExcl}</span> : null}
+                                    {param.max != null ? <span>最大值: {param.max}</span> : null}
+                                    {param.maxExcl != null ? <span>最大(排除): {param.maxExcl}</span> : null}
+                                    {param.minLen != null ? <span>最小长度: {param.minLen}</span> : null}
+                                    {param.maxLen != null ? <span>最大长度: {param.maxLen}</span> : null}
+                                    {param.length != null ? <span>长度: {param.length}</span> : null}
                                     {param.special != null ? (
-                                        <span>Special: [{param.special.map((sp) => `${sp[0]}=${sp[1]}`).join(" ")}]</span>
+                                        <span>特殊: [{param.special.map((sp) => `${sp[0]}=${sp[1]}`).join(" ")}]</span>
                                     ) : null}
-                                    {param.conditions != null ? <span>Conditions: {getConditionStr(param.conditions)}</span> : null}
+                                    {param.conditions != null ? <span>条件: {getConditionStr(param.conditions)}</span> : null}
                                 </div>
                             </div>
                         ))
                     ) : (
-                        <>NO PARAMETER</>
+                        <>无参数</>
                     )}
                 </div>
             ) : null}

@@ -23,7 +23,7 @@ const NavBar = memo(({ setSidebarCollapsed, showNotifications, setShowNotificati
                 <label
                     htmlFor="sidebar-drawer"
                     className="btn btn-ghost lg:hidden"
-                    aria-label="show sidebar"
+                    aria-label={t(($) => $.show_sidebar)}
                     onClick={() => setSidebarCollapsed(false)}
                 >
                     <FontAwesomeIcon icon={faBars} />
@@ -36,7 +36,7 @@ const NavBar = memo(({ setSidebarCollapsed, showNotifications, setShowNotificati
                     htmlFor="notifications-drawer"
                     className="drawer-button btn btn-sm btn-outline btn-primary tooltip tooltip-left"
                     data-tip={t(($) => $.notifications)}
-                    aria-label="toggle notifications"
+                    aria-label={t(($) => $.toggle_notifications)}
                     onClick={() => setShowNotifications(!showNotifications)}
                 >
                     <FontAwesomeIcon icon={faInbox} />

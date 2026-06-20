@@ -62,7 +62,7 @@ const AppLayout = memo(({ children }: AppLayoutProps) => {
             { to: "/network", icon: faHexagonNodes, title: t(($) => $.network) },
             { to: "/logs", icon: faList, title: t(($) => $.logs) },
             { to: "/activity", icon: faWaveSquare, title: t(($) => $.activity) },
-            { to: "/mobile-ops", icon: faMobileScreenButton, title: "移动运维" },
+            { to: "/mobile-ops", icon: faMobileScreenButton, title: t(($) => $.mobile_ops) },
             { to: "/settings", icon: faCogs, title: t(($) => $.settings) },
             { to: "/frontend-settings", icon: faDisplay, title: t(($) => $.frontend_settings) },
         ],
@@ -102,7 +102,7 @@ const AppLayout = memo(({ children }: AppLayoutProps) => {
                         <div className="drawer-side">
                             <label
                                 htmlFor="notifications-drawer"
-                                aria-label="close notifications"
+                                aria-label={t(($) => $.close_notifications)}
                                 className="drawer-overlay"
                                 onClick={() => setShowNotifications(false)}
                             />
@@ -113,7 +113,7 @@ const AppLayout = memo(({ children }: AppLayoutProps) => {
                 <div className="drawer-side lg:overflow-visible!">
                     <label
                         htmlFor="sidebar-drawer"
-                        aria-label="close sidebar"
+                        aria-label={t(($) => $.close_sidebar)}
                         className="drawer-overlay lg:hidden"
                         onClick={() => setSidebarCollapsed(true)}
                     />

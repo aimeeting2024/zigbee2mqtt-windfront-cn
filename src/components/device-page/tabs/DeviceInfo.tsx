@@ -308,9 +308,9 @@ export default function DeviceInfo({ sourceIdx, device }: DeviceInfoProps) {
                         <p className="text-base-content/50">
                             <span className="tooltip tooltip-bottom">
                                 <span className="tooltip-content">
-                                    Organizationally Unique Identifier
+                                    IEEE 组织唯一标识符
                                     <br />
-                                    (IEEE Vendor Prefix)
+                                    （供应商前缀）
                                 </span>
                                 OUI: {oui}
                             </span>
